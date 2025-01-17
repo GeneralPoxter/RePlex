@@ -1,0 +1,37 @@
+# Compiled object files
+*.o
+*.obj
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled static libraries
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+
+# Temporary files
+*.tmp
+*~
+
+# Build directories
+build/
+bin/
+Debug/
+Release/
+
+# Premake generated files
+Makefile
+*.make
