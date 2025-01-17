@@ -24,37 +24,25 @@ protected:
     // Path to library on disk
     virtual const char *GetPath() const = 0;
 
-    // Array of all exported symbols to be reloaded
-    virtual std::array<const char *, NumSymbols> &GetSymbolNames() const = 0;
+    using SymbolArray = std::array<std::pair<const char *, void *>, NumSymbols>;
+    RePlexModule(SymbolArray &symbols) : m_symbols(symbols) {}
 
-    template <typename Ret, typename... Args>
-    Ret Execute(const char *name, Args... args)
+    template <size_t Index, typename Ret, typename... Args>
+    Ret Execute(Args... args)
     {
         // Lookup function address
-        auto symbol = m_symbols.find(name);
-        if (symbol != m_symbols.end())
-        {
-            // Cast to function type and call it
-            return reinterpret_cast<Ret (*)(Args...)>(symbol->second)(args...);
-        }
-        else
-        {
-            throw std::runtime_error(std::string("Function not found: ") + name);
-        }
+        static_assert(Index >= 0 && Index < NumSymbols, "Out of bounds symbol index");
+        auto symbol = m_symbols[Index];
+        // Cast to function type and call it
+        return reinterpret_cast<Ret (*)(Args...)>(symbol.second)(args...);
     }
 
-    template <typename T>
-    T *GetVar(const char *name)
+    template <size_t Index, typename T>
+    T *GetVar()
     {
-        auto symbol = m_symbols.find(name);
-        if (symbol != m_symbols.end())
-        {
-            return reinterpret_cast<T *>(symbol->second);
-        }
-        else
-        {
-            return nullptr;
-        }
+        static_assert(Index >= 0 && Index < NumSymbols, "Out of bounds symbol index");
+        auto symbol = m_symbols[Index];
+        return reinterpret_cast<T *>(symbol.second);
     }
 
 private:
@@ -67,18 +55,17 @@ private:
     void Reload()
     {
         dlclose(m_libHandle);
-        m_symbols.clear();
         Load();
     }
 
     void LoadSymbols()
     {
-        for (const char *symbol : GetSymbolNames())
+        for (auto &&symbol : m_symbols)
         {
-            m_symbols[symbol] = dlsym(m_libHandle, symbol);
+            symbol.second = dlsym(m_libHandle, symbol.first);
         }
     }
 
     void *m_libHandle;
-    std::unordered_map<std::string, void *> m_symbols;
+    SymbolArray &m_symbols;
 };

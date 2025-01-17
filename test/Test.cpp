@@ -3,7 +3,7 @@
 
 void foo()
 {
-    printf("Hi hot reload\n");
+    printf("Hi hot reloadz\n");
 }
 
-int bar = 4;
+int bar = 3;
