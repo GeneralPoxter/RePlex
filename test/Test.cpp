@@ -3,7 +3,7 @@
 
 void foo()
 {
-    printf("Can i haz hot-reloading plz\n");
+    printf("Hi hot reload\n");
 }
 
-int bar = 314159;
+int bar = 4;

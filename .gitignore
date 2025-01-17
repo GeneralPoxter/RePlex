@@ -35,3 +35,6 @@ Release/
 # Premake generated files
 Makefile
 *.make
+
+# VSCode
+.vscode/
