@@ -33,3 +33,8 @@ workspace "RePlex"
     -- link the RePlexLib library at runtime
     links { "RePlex" }
     includedirs { "lib/pub" }
+
+  -- RePlex Test
+  project "RePlexTest"
+    kind "SharedLib"
+    files { "test/**.h", "test/**.cpp", "test/pub/*.h" }

@@ -1,11 +1,11 @@
-// lib/pub/RePlex.h
-
 #pragma once
 
-class Foo
-{
-public:
-    int GetTheAnswer() const;
-private:
-    int m_answer = 42;
-};
+#include <dlfcn.h>
+
+void* Load(const char* filepath);
+
+void* LoadSymbol(void* library, const char* symbol);
+
+void Reload(void* &library, const char* filepath);
+
+void PrintError();
