@@ -6,7 +6,7 @@
 // the correct symbols.
 extern "C"
 {
-    void foo();
+    int foo(int);
     extern int bar;
 }
 
@@ -17,9 +17,9 @@ std::array<std::pair<const char *, void *>, 2> g_exports = {
 class TestModule : public RePlexModule<TestModule, g_exports.size()>
 {
 public:
-    static void Foo()
+    static int Foo(int x)
     {
-        GetInstance().Execute<0, void>();
+        return GetInstance().Execute<0, int, int>(x);
     }
 
     static int GetBar()

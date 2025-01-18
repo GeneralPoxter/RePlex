@@ -19,11 +19,18 @@ workspace "RePlex"
     -- Turn on compiler optimizations for release builds
     optimize "On"
 
+  -- Google Test
+  project "GoogleTest"
+    kind "StaticLib"
+    files { "googletest/googletest/src/gtest-all.cc" }
+    includedirs { "googletest/googletest/include", "googletest/googletest" }
+
   -- RePlex Runtime
   project "RePlexRuntime"
     kind "ConsoleApp"
     files { "runtime/**.h", "runtime/**.cpp" }
-    includedirs { "lib/pub", "test/pub" }
+    includedirs { "lib/pub", "test/pub", "googletest/googletest/include" }
+    links { "GoogleTest" }
 
   -- RePlex Test
   project "RePlexTest"

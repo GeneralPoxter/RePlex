@@ -11,6 +11,7 @@ class RePlexModule
 {
 public:
     static void LoadLibrary() { GetInstance().Load(); }
+    static void UnloadLibrary() { GetInstance().Unload(); }
     static void ReloadLibrary() { GetInstance().Reload(); }
 
 protected:
@@ -52,9 +53,14 @@ private:
         LoadSymbols();
     }
 
-    void Reload()
+    void Unload()
     {
         dlclose(m_libHandle);
+    }
+
+    void Reload()
+    {
+        Unload();
         Load();
     }
 
